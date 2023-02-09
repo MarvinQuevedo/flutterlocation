@@ -141,6 +141,11 @@ class LocationPlugin : FlutterPlugin, ActivityAware, LocationListener,
 
     override fun onLocationChanged(location: Location?) {
         Log.d("LOCATION", location?.latitude.toString() + " " + location?.longitude.toString())
+        var satellites:Long? = null
+        if(location?.extras?.containsKey("sastellites") == true ){
+            satellites = location.extras.getInt("satellites").toLong()
+        }
+
 
         val locationBuilder =
             GeneratedAndroidLocation.PigeonLocationData.Builder().setLatitude(location!!.latitude)
@@ -150,7 +155,7 @@ class LocationPlugin : FlutterPlugin, ActivityAware, LocationListener,
                 .setBearing(location.bearing.toDouble())
                 .setElaspedRealTimeNanos(location.elapsedRealtimeNanos.toDouble())
                 .setIsMock(location.isFromMockProvider)
-                .setSatellites(location.extras.getInt("satellites").toLong())
+                .setSatellites(satellites)
                 .setSpeed(location.speed.toDouble())
 
 
